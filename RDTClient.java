@@ -31,7 +31,7 @@ public class RDTClient {
         try{
             ds = new DatagramSocket(sourcePortNumber,addr);
             System.out.println("initialized");
-        }
+        }       
         catch(SocketException e){
             System.out.println(e);
         }
@@ -54,7 +54,7 @@ public class RDTClient {
             message[i]= buf[i+2];
         }
         byte[] decoded = Base64.getDecoder().decode(message);
-        System.out.println(new String(decoded));    // Outputs "Hello"
+        System.out.println(new String(decoded));    // Outputs "HELOO"
         
     }
 }
