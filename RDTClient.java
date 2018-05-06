@@ -34,8 +34,9 @@ public class RDTClient {
         bufferedInputStream = new BufferedInputStream(fileInputStream);
 
         //Prepare Writer
-        String altered = fileName.substring(0,fileName.indexOf("."));
-        outputStream = new FileOutputStream(altered + "_altered.txt");
+        String alteredFileName = fileName.substring(0,fileName.indexOf("."));
+        outputStream = new FileOutputStream(alteredFileName + "_altered.txt");
+
 
         //Prepare DatagramSocket
         inetAddress = InetAddress.getByName("127.0.0.1");
@@ -57,7 +58,7 @@ public class RDTClient {
             }
             Byte[] objectArray = new Byte[arrayList.size()];
             arrayList.toArray(objectArray);
-            byte[] primitiveArray = new byte[objectArray.length];
+            byte[] primitiveArray = new byte[MAX_DATA_LENGTH];
             int index = 0;
             for(Byte b: objectArray)
                 primitiveArray[index++] = b;
@@ -105,11 +106,8 @@ public class RDTClient {
                         totalTransmission++;
                         sendAck();
                     } else {
-                        totalTransmission++;
-                        increaseSequenceNumber();
-                        sendAck();
+                        throw new Exception("Unexpected Sequence Number For Emd!");
                     }
-                    System.out.println(datagramPacket.getLength());
                     return;
             }
         }
@@ -162,14 +160,13 @@ public class RDTClient {
             datagramSocket.receive(datagramPacket);
             buffer = datagramPacket.getData();
             if (buffer[0] != 1){
-                throw new Exception("No!");
+                throw new Exception("Unexpected Message Type!");
             }
             if (buffer[1] != previousSequenceNumber()){
-                throw new Exception("No2!");
+                throw new Exception("Unexpected Sequence Number!");
             }
         } catch (SocketTimeoutException socketTimeoutException){
             totalMessage--;
-            System.out.println("Aha!");
             increaseSequenceNumber();
             sendPacket(packet);
         }
