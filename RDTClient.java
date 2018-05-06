@@ -34,7 +34,8 @@ public class RDTClient {
         bufferedInputStream = new BufferedInputStream(fileInputStream);
 
         //Prepare Writer
-        outputStream = new FileOutputStream(fileName + "_altered.txt");
+        String altered = fileName.substring(0,fileName.indexOf("."));
+        outputStream = new FileOutputStream(altered + "_altered.txt");
 
         //Prepare DatagramSocket
         inetAddress = InetAddress.getByName("127.0.0.1");
