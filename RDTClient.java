@@ -34,7 +34,7 @@ public class RDTClient {
         bufferedInputStream = new BufferedInputStream(fileInputStream);
 
         //Prepare Writer
-        String alteredFileName = fileName.substring(0,fileName.indexOf("."));
+        String alteredFileName = fileName.substring(0,fileName.indexOf(".txt"));
         outputStream = new FileOutputStream(alteredFileName + "_altered.txt");
 
 
